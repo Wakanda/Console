@@ -12,6 +12,7 @@
     </div>
     <button style="position:absolute;width:90px;right:30px;top:10px;" onclick="document.getElementById('consoleList').innerHTML=''">Clear</button>
     <script type="text/javascript">
+    	var nbLines = 0;
 
         function htmlify($text) {
             var tlnk = new Array; //Create an array to hold the potential links
@@ -108,13 +109,27 @@
 
         function GetLog() {
             var output, i, str="";
+            var n = 0;
             output = studio.getConsoleLog();
             //output = ["toto"];
             if (output.length > 0) {
                 for (i = 0; i < output.length; i++) {
                     str += htmlify(output[i]) + '<br>';
+                    n++;
                 }
-                document.getElementById("consoleList").innerHTML += str;
+   
+   				// you can adjust this value to keep more lines in the console
+                if ( nbLines > 300 )
+                {
+                	nbLines = n;
+                	document.getElementById("consoleList").innerHTML = str;
+                }
+                else
+                {
+                	nbLines += n;
+	                document.getElementById("consoleList").innerHTML += str;
+                }
+   
                 var elm = document.getElementById("scrollBox")
                 elm.scrollTop = elm.scrollHeight;
             }
